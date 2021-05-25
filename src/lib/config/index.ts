@@ -10,6 +10,8 @@ export interface Config {
   shortName: string;
   network: string;
   unknown: boolean;
+  nativeAsset: string;
+  nativeAssetLong: string;
   rpc: string;
   ws: string;
   explorer: string;
