@@ -50,7 +50,7 @@ export default function useWeb3() {
 
   const networkMismatch = computed(() => {
     return (
-      !unsupportedNetwork.value &&
+      unsupportedNetwork.value ||
       userNetwork.value.key !== process.env.VUE_APP_NETWORK
     );
   });
