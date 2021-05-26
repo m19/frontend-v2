@@ -168,6 +168,12 @@
         block
         @click.prevent="connectWallet"
       />
+      <BalBtn
+        v-else-if="networkMismatch"
+        :label="$t('networkMismatch', [appNetwork.name])"
+        block
+        @click.prevent="changeNetwork"
+      />
       <template v-else>
         <div
           :class="['flex items-center text-sm mb-4', priceImpactClasses]"
@@ -318,7 +324,13 @@ export default defineComponent({
     // COMPOSABLES
     const store = useStore();
     const { isAuthenticated } = useAuth();
-    const { account, appNetwork, userNetwork } = useWeb3();
+    const {
+      account,
+      appNetwork,
+      userNetwork,
+      networkMismatch,
+      changeNetwork
+    } = useWeb3();
     const { fNum, toFiat } = useNumbers();
     const { t } = useI18n();
     const { txListener } = useNotify();
@@ -662,6 +674,9 @@ export default defineComponent({
       total,
       isAuthenticated,
       connectWallet,
+      appNetwork,
+      networkMismatch,
+      changeNetwork,
       formatBalance,
       isProportional,
       propPercentage,

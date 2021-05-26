@@ -12,6 +12,7 @@ export interface Config {
   unknown: boolean;
   nativeAsset: string;
   nativeAssetLong: string;
+  rpcBase: string;
   rpc: string;
   ws: string;
   explorer: string;

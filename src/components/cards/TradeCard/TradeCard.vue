@@ -48,6 +48,12 @@
         block
         @click.prevent="connectWallet"
       />
+      <BalBtn
+        v-else-if="networkMismatch"
+        :label="$t('networkMismatch', [appNetwork.name])"
+        block
+        @click.prevent="changeNetwork"
+      />
       <BalBtn v-else-if="errorMessage" :label="errorMessage" block disabled />
       <BalBtn
         v-else
@@ -100,6 +106,7 @@ import { useRouter } from 'vue-router';
 import { isAddress, getAddress } from '@ethersproject/address';
 
 import useAuth from '@/composables/useAuth';
+import useWeb3 from '@/composables/useWeb3';
 import useTokenApproval from '@/composables/trade/useTokenApproval';
 import useValidation from '@/composables/trade/useValidation';
 import useSor from '@/composables/trade/useSor';
@@ -130,6 +137,7 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
     const { isAuthenticated } = useAuth();
+    const { appNetwork, networkMismatch, changeNetwork } = useWeb3();
     const { t } = useI18n();
 
     const getTokens = (params = {}) =>
@@ -251,8 +259,11 @@ export default defineComponent({
     return {
       highPiAccepted,
       title,
+      appNetwork,
+      networkMismatch,
       isAuthenticated,
       connectWallet,
+      changeNetwork,
       tokenInAddress,
       tokenInAmount,
       tokenOutAddress,

@@ -122,6 +122,12 @@
         block
         @click.prevent="connectWallet"
       />
+      <BalBtn
+        v-else-if="networkMismatch"
+        :label="$t('networkMismatch', [appNetwork.name])"
+        block
+        @click.prevent="changeNetwork"
+      />
       <template v-else>
         <div
           :class="['flex items-center text-sm mb-4', priceImpactClasses]"
@@ -208,6 +214,7 @@ import FormTypeToggle from './shared/FormTypeToggle.vue';
 import useTokens from '@/composables/useTokens';
 import { FullPool } from '@/services/balancer/subgraph/types';
 import useFathom from '@/composables/useFathom';
+import useWeb3 from '@/composables/useWeb3';
 
 export enum FormTypes {
   proportional = 'proportional',
@@ -244,6 +251,7 @@ export default defineComponent({
     const store = useStore();
     const { txListener } = useNotify();
     const { isAuthenticated } = useAuth();
+    const { appNetwork, networkMismatch, changeNetwork } = useWeb3();
     const { fNum, toFiat } = useNumbers();
     const { minusSlippage, addSlippage } = useSlippage();
     const { t } = useI18n();
@@ -608,6 +616,9 @@ export default defineComponent({
       fNum,
       isAuthenticated,
       connectWallet,
+      appNetwork,
+      networkMismatch,
+      changeNetwork,
       total,
       isProportional,
       isSingleAsset,

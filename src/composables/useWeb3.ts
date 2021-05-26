@@ -10,7 +10,7 @@ const appConfig: Config | undefined =
 
 export default function useWeb3() {
   const store = useStore();
-  const { isAuthenticated } = useAuth();
+  const { provider, isAuthenticated } = useAuth();
 
   const account = computed(() => store.state.web3.account);
   const profile = computed(() => store.state.web3.profile);
@@ -25,6 +25,7 @@ export default function useWeb3() {
     name: appConfig?.shortName || 'Mainnet',
     networkName: appConfig?.network || 'homestead',
     nativeAsset: appConfig?.nativeAsset || 'ETH',
+    nativeAssetLong: appConfig?.nativeAssetLong || 'Ether'
   };
 
   // User network vars (dynamic)
@@ -70,6 +71,21 @@ export default function useWeb3() {
     return `${firstSegment}...${lastSegment}`;
   }
 
+  function changeNetwork() {
+    provider.value.send('wallet_addEthereumChain', [
+      {
+        chainId: `0x${appNetwork.id.toString(16)}`,
+        chainName: appNetwork.name,
+        nativeCurrency: {
+          name: appNetwork.nativeAssetLong,
+          symbol: appNetwork.nativeAsset,
+          decimals: 18
+        },
+        rpcUrls: [appConfig?.rpcBase]
+      }
+    ]);
+  }
+
   return {
     explorer,
     appNetwork,
@@ -83,6 +99,7 @@ export default function useWeb3() {
     unsupportedNetwork,
     networkMismatch,
     isConnected,
-    shortenLabel
+    shortenLabel,
+    changeNetwork
   };
 }
