@@ -1,9 +1,12 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 
-import configs from '@/lib/config';
+import configs, { Config } from '@/lib/config';
 import getProvider from '@/lib/utils/provider';
 import useAuth from '@/composables/useAuth';
+
+const appConfig: Config | undefined =
+  configs[Number(process.env.VUE_APP_NETWORK)];
 
 export default function useWeb3() {
   const store = useStore();
@@ -19,11 +22,9 @@ export default function useWeb3() {
   const appNetwork = {
     key: process.env.VUE_APP_NETWORK || '1',
     id: Number(process.env.VUE_APP_NETWORK) || 1,
-    name: configs[Number(process.env.VUE_APP_NETWORK)].shortName || 'Mainnet',
-    networkName:
-      configs[Number(process.env.VUE_APP_NETWORK)].network || 'homestead',
-    nativeAsset:
-      configs[Number(process.env.VUE_APP_NETWORK)].nativeAsset || 'ETH'
+    name: appConfig?.shortName || 'Mainnet',
+    networkName: appConfig?.network || 'homestead',
+    nativeAsset: appConfig?.nativeAsset || 'ETH',
   };
 
   // User network vars (dynamic)
