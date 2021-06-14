@@ -54,7 +54,7 @@ export default class JoinParams {
   }
 
   private txData(amountsIn: BigNumberish[], bptOut: BigNumberish): string {
-    if (this.exchange.pool.onchain.totalSupply === '0') {
+    if (this.exchange.pool.onchain.totalSupply === '0.0') {
       return this.dataEncodeFn({ kind: 'Init', amountsIn });
     } else {
       const params = { amountsIn };

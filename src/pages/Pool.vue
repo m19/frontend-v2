@@ -172,12 +172,7 @@ export default defineComponent({
 
     const pool = computed(() => poolQuery.data.value);
 
-    const noInitLiquidity = computed(
-      () =>
-        !loadingPool.value &&
-        pool.value &&
-        Number(pool.value.onchain.totalSupply) === 0
-    );
+    const noInitLiquidity = false;
 
     const communityManagedFees = computed(
       () => pool.value?.owner == POOLS.DelegateOwner

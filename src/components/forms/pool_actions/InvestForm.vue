@@ -434,6 +434,9 @@ export default defineComponent({
     });
 
     const minBptOut = computed(() => {
+      if (props.pool.onchain.totalSupply === '0.0') {
+        return '0';
+      }
       let bptOut = poolCalculator
         .exactTokensInForBPTOut(fullAmounts.value)
         .toString();
@@ -557,7 +560,6 @@ export default defineComponent({
       if (!data.investForm.validate()) return;
       try {
         data.loading = true;
-        await calcMinBptOut();
         const tx = await poolExchange.value.join(
           account.value,
           fullAmounts.value,
